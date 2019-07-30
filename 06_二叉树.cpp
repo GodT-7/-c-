@@ -2,7 +2,7 @@
 
 typedef struct BTNode{
 	char data;
-	struct BTNode *pLchild;//pÊÇÖ¸Õë,lÊÇ×ó£¬childÊÇº¢×Ó
+	struct BTNode *pLchild;//pæ˜¯æŒ‡é’ˆ,læ˜¯å·¦ï¼Œchildæ˜¯å­©å­
 	struct BTNode *pRchild; 
 }BTNode ,*PBTNode;
 
@@ -10,16 +10,22 @@ class Btnode{
 public:
 	PBTNode pT;
 	
-	Btnode();//¹¹Ôìº¯Êı£¬´´½¨¾²Ì¬¶ş²æÊ÷ 
-	void PreTraverseBTree();//ÏÈĞòÊä³ö 
-	void PreOrder(PBTNode);//ÏÈĞò 
-	void InTraverseBTree();//ÖĞĞòÊä³ö 
-	void InOrder(PBTNode);//ÖĞĞò
-	void PostTraverseBTree(); //ºóĞòÊä³ö
-	void PostOrder(PBTNode);//ºóĞò
-	//~Btnode();//Îö¹¹º¯Êı,ÊÍ·Å¿Õ¼ä 
-	void freeTree();//ÊÍ·Å¿Õ¼ä
-	void free(PBTNode);//ÊÍ·Å 
+	Btnode();//æ„é€ å‡½æ•°ï¼Œåˆ›å»ºé™æ€äºŒå‰æ ‘ 
+	void PreTraverseBTree();//å…ˆåºè¾“å‡º 
+	void PreOrder(PBTNode);//å…ˆåº 
+	void InTraverseBTree();//ä¸­åºè¾“å‡º 
+	void InOrder(PBTNode);//ä¸­åº
+	void PostTraverseBTree(); //ååºè¾“å‡º
+	void PostOrder(PBTNode);//ååº
+	//~Btnode();//ææ„å‡½æ•°,é‡Šæ”¾ç©ºé—´ 
+	void freeTree();//é‡Šæ”¾ç©ºé—´
+	void free(PBTNode);//é‡Šæ”¾ 
+	int  get_height();//æ±‚æ ‘çš„æ·±åº¦ï¼Œé€’å½’æ±‚æ³• 
+	int  geth(PBTNode node);
+	int  getmax(PBTNode node);
+	int  get_max();//æ±‚æ ‘çš„æœ€å¤§å€¼ï¼Œé€’å½’æ±‚æ³•
+	int  getmin(PBTNode node);
+	int  get_min();//æ±‚æ ‘çš„æœ€å°å€¼ï¼Œé€’å½’æ±‚æ³• 
 };
 
 int main(void){
@@ -31,6 +37,12 @@ int main(void){
 	std::cout<<"\n";
 	p.PostTraverseBTree();
 	std::cout<<"\n";
+	int height=p.get_height();
+	std::cout<<"æ·±åº¦="<<height<<"\n";
+	int max=p.get_max();
+	std::cout<<"æœ€å¤§å€¼="<<max<<"\n";
+	int min=p.get_min();
+	std::cout<<"æœ€å°å€¼="<<min<<"\n"; 
 	
 	return 0;
 } 
@@ -85,12 +97,12 @@ void Btnode::freeTree(){
 }
 
 void Btnode::PreOrder(PBTNode pT){
-	//ÏÈ·ÃÎÊ¸ù
-	//ÔÚÏÈĞò·ÃÎÊ×ó×ÓÊ÷
-	//ÔÙÏÈĞò·ÃÎÊÓÒ×ÓÊ÷
+	//å…ˆè®¿é—®æ ¹
+	//åœ¨å…ˆåºè®¿é—®å·¦å­æ ‘
+	//å†å…ˆåºè®¿é—®å³å­æ ‘
 	if(pT!=NULL){
 		std::cout<<pT->data<<" ";
-		//pT->pLchild¿ÉÒÔ´ú±íÕû¸ö×ó×ÓÊ÷
+		//pT->pLchildå¯ä»¥ä»£è¡¨æ•´ä¸ªå·¦å­æ ‘
 		if(NULL!=pT->pLchild)
 			PreOrder(pT->pLchild);
 		if(NULL!=pT->pRchild)
@@ -100,11 +112,11 @@ void Btnode::PreOrder(PBTNode pT){
 }
 
 void Btnode::InOrder(PBTNode pT){
-	//ÏÈÖĞĞò·ÃÎÊ×ó×ÓÊ÷ 
-	//ÔÙ·ÃÎÊ¸ù
-	//×îºóÖĞĞò·ÃÎÊÓÒ×ÓÊ÷ 
+	//å…ˆä¸­åºè®¿é—®å·¦å­æ ‘ 
+	//å†è®¿é—®æ ¹
+	//æœ€åä¸­åºè®¿é—®å³å­æ ‘ 
 	if(pT!=NULL){
-		//pT->pLchild¿ÉÒÔ´ú±íÕû¸ö×ó×ÓÊ÷
+		//pT->pLchildå¯ä»¥ä»£è¡¨æ•´ä¸ªå·¦å­æ ‘
 		if(NULL!=pT->pLchild)
 			InOrder(pT->pLchild);
 		std::cout<<pT->data<<" ";
@@ -115,11 +127,11 @@ void Btnode::InOrder(PBTNode pT){
 }
 
 void Btnode::PostOrder(PBTNode pT){
-	//ÏÈºóĞò·ÃÎÊ×ó×ÓÊ÷ 
-	//ÔÙºóĞò·ÃÎÊÓÒ×ÓÊ÷
-	//×îºó·ÃÎÊ¸ù
+	//å…ˆååºè®¿é—®å·¦å­æ ‘ 
+	//å†ååºè®¿é—®å³å­æ ‘
+	//æœ€åè®¿é—®æ ¹
 	if(pT!=NULL){
-		//pT->pLchild¿ÉÒÔ´ú±íÕû¸ö×ó×ÓÊ÷
+		//pT->pLchildå¯ä»¥ä»£è¡¨æ•´ä¸ªå·¦å­æ ‘
 		if(NULL!=pT->pLchild)
 			PostOrder(pT->pLchild);
 		if(NULL!=pT->pRchild)
@@ -139,4 +151,63 @@ void Btnode::free(PBTNode pT){
 		free(rchild);
 	}else
 		return;
+}
+
+int Btnode::get_height(){
+	return geth(this->pT);
+}
+
+int Btnode::geth(PBTNode node){//ç”¨é€’å½’åˆ†è€Œæ²»ä¹‹ï¼Œæ±‚å·¦è¾¹çš„æ·±åº¦å†æ±‚å³è¾¹çš„æ·±åº¦ä¸æ–­é€’å½’ 
+	if(node==NULL) //é€’å½’å‡ºå£ 
+		return 0;
+	else{
+		int left_h=geth(node->pLchild);
+		int right_h=geth(node->pRchild);
+		int max=left_h;
+		if(right_h>max)
+			max=right_h;
+		return max+1;
+	}
+}
+
+int Btnode::get_max(){
+	return getmax(this->pT);
+	std::cout<<"\n";
+}
+
+int Btnode::getmax(PBTNode node){
+	if(NULL==node){///é€’å½’å‡ºå£ 
+		return -1;
+	}else{
+		int m1=getmax(node->pLchild);
+		int m2=getmax(node->pRchild);
+		int m3=node->data;
+		int max=m1;
+		if(m2>max)
+			max=m2;
+		if(m3>max)
+			max=m3;
+		return max;
+	}
+}
+
+int Btnode::get_min(){
+	return getmin(this->pT);
+	std::cout<<"\n";
+}
+
+int Btnode::getmin(PBTNode node){
+	if(NULL==node){///é€’å½’å‡ºå£ 
+		return 10000;
+	}else{
+		int m1=getmin(node->pLchild);
+		int m2=getmin(node->pRchild);
+		int m3=node->data;
+		int min=m1;
+		if(m2<min)
+			min=m2;
+		if(m3<min)
+			min=m3;
+		return min;
+	}
 }
